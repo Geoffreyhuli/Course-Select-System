@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auggie.student_server.mapper.TeacherMapper">
+
+    <!-- 查询所有教师 -->
+    <select id="findAll" resultType="Teacher">
+        SELECT
+            staff_id AS staffId,
+            name,
+            password,
+            sex,
+            date_of_birth AS dateOfBirth,
+            professional_ranks AS professionalRanks,
+            salary,
+            dept_id AS deptId
+        FROM
+            teacher;
+    </select>
+
+    <!-- 根据条件查询教师 -->
+    <select id="findBySearch" resultType="Teacher">
+        SELECT
+        staff_id AS staffId,
+        name,
+        password,
+        sex,
+        date_of_birth AS dateOfBirth,
+        professional_ranks AS professionalRanks,
+        salary,
+        dept_id AS deptId
+        FROM
+        teacher
+        <where>
+            <if test="staffId != null and staffId != ''">
+                staff_id = #{staffId}
+            </if>
+            <if test="name != null and name != ''">
+                <if test="fuzzy == 0">
+                    AND name = #{name}
+                </if>
+                <if test="fuzzy == 1">
+                    AND name LIKE CONCAT('%', #{name}, '%')
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据教师ID查询教师信息 -->
+    <select id="findById" resultType="Teacher">
+        SELECT
+            staff_id AS staffId,
+            name,
+            password,
+            sex,
+            date_of_birth AS dateOfBirth,
+            professional_ranks AS professionalRanks,
+            salary,
+            dept_id AS deptId
+        FROM
+            teacher
+        WHERE
+            staff_id = #{staffId};
+    </select>
+
+    <!-- 更新教师信息 -->
+    <update id="updateById">
+        UPDATE teacher SET
+                           name = #{teacher.name},
+                           password = #{teacher.password},
+                           sex = #{teacher.sex},
+                           date_of_birth = #{teacher.dateOfBirth},
+                           professional_ranks = #{teacher.professionalRanks},
+                           salary = #{teacher.salary},
+                           dept_id = #{teacher.deptId}
+        WHERE
+            staff_id = #{teacher.staffId};
+    </update>
+
+    <!-- 插入教师信息 -->
+    <insert id="save">
+        INSERT INTO teacher (staff_id, name, password, sex, date_of_birth, professional_ranks, salary, dept_id)
+        VALUES (#{teacher.staffId}, #{teacher.name}, #{teacher.password}, #{teacher.sex}, #{teacher.dateOfBirth}, #{teacher.professionalRanks}, #{teacher.salary}, #{teacher.deptId})
+    </insert>
+
+    <!-- 根据教师ID删除教师 -->
+    <delete id="deleteById">
+        DELETE FROM teacher WHERE staff_id = #{staffId}
+    </delete>
+</mapper>

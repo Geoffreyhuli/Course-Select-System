@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auggie.student_server.mapper.StudentCourseTeacherMapper">
+
+    <!-- 根据学生ID和学期查询课程-教师信息 -->
+    <select id="findByStudentId" resultType="CourseTeacherInfo">
+        SELECT
+            c.course_id AS courseId,
+            c.course_name AS courseName,
+            t.staff_id AS staffId,
+            t.name AS teacherName,
+            cs.total_score AS grade,
+            c.credit
+        FROM
+            course_selection cs
+                INNER JOIN
+            teacher t ON cs.staff_id = t.staff_id
+                INNER JOIN
+            course c ON cs.course_id = c.course_id
+        WHERE
+            cs.student_id = #{studentId} AND cs.semester = #{semester}
+    </select>
+
+    <!-- 根据条件查询学生-课程-教师信息 -->
+    <select id="findBySearch" resultType="SCTInfo">
+        SELECT
+        c.course_id AS courseId,
+        c.course_name AS courseName,
+        t.staff_id AS staffId,
+        t.name AS teacherName,
+        s.student_id AS studentId,
+        s.name AS studentName,
+        cs.total_score AS grade,
+        cs.semester
+        FROM
+        course_selection cs
+        INNER JOIN
+        student s ON cs.student_id = s.student_id
+        INNER JOIN
+        teacher t ON cs.staff_id = t.staff_id
+        INNER JOIN
+        course c ON cs.course_id = c.course_id
+        <where>
+            <if test="studentId != null and studentId != ''">
+                s.student_id = #{studentId}
+            </if>
+            <if test="staffId != null and staffId != ''">
+                AND t.staff_id = #{staffId}
+            </if>
+            <if test="courseId != null and courseId != ''">
+                AND c.course_id = #{courseId}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                <if test="sFuzzy == 0">
+                    AND s.name = #{studentName}
+                </if>
+                <if test="sFuzzy == 1">
+                    AND s.name LIKE CONCAT('%', #{studentName}, '%')
+                </if>
+            </if>
+            <if test="teacherName != null and teacherName != ''">
+                <if test="tFuzzy == 0">
+                    AND t.name = #{teacherName}
+                </if>
+                <if test="tFuzzy == 1">
+                    AND t.name LIKE CONCAT('%', #{teacherName}, '%')
+                </if>
+            </if>
+            <if test="courseName != null and courseName != ''">
+                <if test="cFuzzy == 0">
+                    AND c.course_name = #{courseName}
+                </if>
+                <if test="cFuzzy == 1">
+                    AND c.course_name LIKE CONCAT('%', #{courseName}, '%')
+                </if>
+            </if>
+            <if test="semester != null and semester != ''">
+                AND cs.semester = #{semester}
+            </if>
+            <if test="lowBound != null">
+                AND cs.total_score >= #{lowBound}
+            </if>
+            <if test="highBound != null">
+                AND #{highBound} >= cs.total_score
+            </if>
+        </where>
+    </select>
+</mapper>

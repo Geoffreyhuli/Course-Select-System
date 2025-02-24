@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auggie.student_server.mapper.CourseTeacherMapper">
+
+    <!-- 根据条件查询课程-教师关联信息 -->
+    <select id="findBySearch" resultType="CourseTeacher">
+        SELECT
+        semester,
+        course_id AS courseId,
+        staff_id AS staffId,
+        class_time AS classTime
+        FROM
+        class
+        <where>
+            <if test="courseId != null and courseId != ''">
+                course_id = #{courseId}
+            </if>
+            <if test="staffId != null and staffId != ''">
+                AND staff_id = #{staffId}
+            </if>
+            <if test="semester != null and semester != ''">
+                AND semester = #{semester}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询教师教授的课程 -->
+    <select id="findMyCourse" resultType="Course">
+        SELECT
+            c.course_id AS courseId,
+            c.course_name AS courseName,
+            c.credit,
+            c.credit_hours AS creditHours,
+            c.dept_id AS deptId
+        FROM
+            class ct
+                INNER JOIN
+            course c ON ct.course_id = c.course_id
+        WHERE
+            ct.staff_id = #{staffId} AND ct.semester = #{semester}
+    </select>
+
+    <!-- 查询课程-教师关联信息 -->
+    <select id="findCourseTeacherInfo" resultType="CourseTeacherInfo">
+        SELECT
+        c.course_id AS courseId,
+        c.course_name AS courseName,
+        t.staff_id AS staffId,
+        t.name AS teacherName,
+        c.credit,
+        ct.semester
+        FROM
+        class ct
+        INNER JOIN
+        course c ON ct.course_id = c.course_id
+        INNER JOIN
+        teacher t ON ct.staff_id = t.staff_id
+        <where>
+            <if test="staffId != null and staffId != ''">
+                t.staff_id = #{staffId}
+            </if>
+            <if test="teacherName != null and teacherName != ''">
+                <if test="tFuzzy == 0">
+                    AND t.name = #{teacherName}
+                </if>
+                <if test="tFuzzy == 1">
+                    AND t.name LIKE CONCAT('%', #{teacherName}, '%')
+                </if>
+            </if>
+            <if test="courseId != null and courseId != ''">
+                AND c.course_id = #{courseId}
+            </if>
+            <if test="courseName != null and courseName != ''">
+                <if test="cFuzzy == 0">
+                    AND c.course_name = #{courseName}
+                </if>
+                <if test="cFuzzy == 1">
+                    AND c.course_name LIKE CONCAT('%', #{courseName}, '%')
+                </if>
+            </if>
+        </where>
+    </select>
+</mapper>
