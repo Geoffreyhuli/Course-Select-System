@@ -11,7 +11,13 @@
         <el-form-item label="学生名" prop="sname">
           <el-input v-model="ruleForm.sname" :value="ruleForm.sname" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="分数" prop="grade">
+        <el-form-item label="平时分" prop="grade">
+          <el-input v-model.number="ruleForm.grade" :value="ruleForm.grade"></el-input>
+        </el-form-item>
+        <el-form-item label="考试分数" prop="grade">
+          <el-input v-model.number="ruleForm.grade" :value="ruleForm.grade"></el-input>
+        </el-form-item>
+        <el-form-item label="最终分数" prop="totalScore">
           <el-input v-model.number="ruleForm.grade" :value="ruleForm.grade"></el-input>
         </el-form-item>
         <el-form-item>

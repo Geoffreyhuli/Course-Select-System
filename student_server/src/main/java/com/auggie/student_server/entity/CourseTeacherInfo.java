@@ -17,10 +17,12 @@ import org.apache.ibatis.type.Alias;
 @AllArgsConstructor
 @Alias("CourseTeacherInfo")
 public class CourseTeacherInfo {
-    private String courseId;      // 课程ID，对应数据库中的 course_id
-    private String staffId;       // 教师ID，对应数据库中的 staff_id
-    private String courseName;    // 课程名称，对应数据库中的 course_name
-    private String teacherName;   // 教师姓名，对应数据库中的 name（teacher 表）
-    private Integer credit;       // 学分，对应数据库中的 credit
-    private Float grade;          // 成绩，对应数据库中的 total_score
+    private String courseId;
+    private String staffId;
+    private String courseName;
+    private String teacherName;
+    private Integer credit;
+    private Float normalScore;
+    private Float testScore;
+    private Float totalScore;
 }

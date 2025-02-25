@@ -62,13 +62,15 @@ public class SCTcontroller {
     }
 
     // 更新成绩
-    @GetMapping("/updateById/{studentId}/{courseId}/{staffId}/{semester}/{grade}")
+    @GetMapping("/updateById/{studentId}/{courseId}/{staffId}/{semester}/{normalScore}/{testScore}/{totalScore}")
     public boolean updateById(@PathVariable String studentId,
                               @PathVariable String courseId,
                               @PathVariable String staffId,
                               @PathVariable String semester,
-                              @PathVariable Integer grade) {
-        return sctService.updateById(studentId, courseId, staffId, semester, grade);
+                              @PathVariable Float normalScore,
+                              @PathVariable Float testScore,
+                              @PathVariable Float totalScore) {
+        return sctService.updateById(studentId, courseId, staffId, semester,normalScore,testScore,totalScore );
     }
 
     // 根据学生ID、课程ID、教师ID和学期删除选课记录

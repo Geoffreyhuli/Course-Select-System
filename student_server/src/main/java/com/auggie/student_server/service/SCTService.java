@@ -60,8 +60,8 @@ public class SCTService {
     }
 
     // 更新成绩
-    public boolean updateById(String studentId, String courseId, String staffId, String semester, Integer grade) {
-        return studentCourseTeacherMapper.updateById(studentId, courseId, staffId, semester, grade);
+    public boolean updateById(String studentId, String courseId, String staffId, String semester, Float normalScore,Float testScore,Float totalScore) {
+        return studentCourseTeacherMapper.updateById(studentId, courseId, staffId, semester, normalScore,testScore,totalScore);
     }
 
     // 根据条件查询选课信息

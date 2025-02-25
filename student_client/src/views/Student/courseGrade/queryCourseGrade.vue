@@ -29,12 +29,12 @@
             width="150">
         </el-table-column>
         <el-table-column
-            prop="tname"
+            prop="name"
             label="教师名称"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="ccredit"
+            prop="credit"
             label="学分"
             width="150">
         </el-table-column>
@@ -91,9 +91,9 @@ export default {
   watch: {
     term: {
       handler(newTerm, oldTerm) {
-        const sid = sessionStorage.getItem('sid')
+        const sid = sessionStorage.getItem('studentId')
         const that = this
-        axios.get('http://localhost:10086/SCT/findBySid/' + sid + '/' + newTerm).then(function (resp) {
+        axios.get('http://localhost:10086/SCT/findBySid/' + studentId + '/' + newTerm).then(function (resp) {
           that.tmpList = resp.data
           that.total = resp.data.length
           let start = 0, end = that.pageSize
@@ -102,7 +102,7 @@ export default {
           that.tableData = that.tmpList.slice(start, end)
           let totalScore = 0
           for (let i = 0; i < that.total; i++) {
-            totalScore += that.tmpList[i].ccredit
+            totalScore += that.tmpList[i].credit
             that.avg += that.tmpList[i].ccredit * that.tmpList[i].grade
           }
           if (totalScore === 0)
