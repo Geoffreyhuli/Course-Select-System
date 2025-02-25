@@ -5,17 +5,9 @@ import com.auggie.student_server.mapper.CourseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-/**
- * @Auther: auggie
- * @Date: 2022/2/9 13:46
- * @Description: CourseService
- * @Version 1.0.0
- */
 
 @Service
 public class CourseService {
@@ -23,53 +15,51 @@ public class CourseService {
     private CourseMapper courseMapper;
 
     public List<Course> findBySearch(Map<String, String> map) {
-        Integer cid = null;
+        String courseId = null;
         Integer lowBound = null;
         Integer highBound = null;
         Integer fuzzy = 0;
-        String cname = null;
+        String courseName = null;
 
-        if (map.containsKey("cid")) {
-            try {
-                cid = Integer.parseInt(map.get("cid"));
-            }
-            catch (Exception e) {
-            }
+        if (map.containsKey("courseId")) {
+            courseId = map.get("courseId");
         }
         if (map.containsKey("lowBound")) {
             try {
                 lowBound = Integer.parseInt(map.get("lowBound"));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
+                // 忽略异常
             }
         }
         if (map.containsKey("highBound")) {
             try {
-                highBound = Integer.valueOf(map.get("highBound"));
-            }
-            catch (Exception e) {
+                highBound = Integer.parseInt(map.get("highBound"));
+            } catch (Exception e) {
+                // 忽略异常
             }
         }
-        if (map.containsKey("cname")) {
-            cname = map.get("cname");
+        if (map.containsKey("courseName")) {
+            courseName = map.get("courseName");
         }
         if (map.containsKey("fuzzy")) {
-            fuzzy = (map.get("fuzzy").equals("true")) ? 1 : 0;
+            fuzzy = map.get("fuzzy").equals("true") ? 1 : 0;
         }
+
         System.out.println("查询课程 map：" + map);
-        System.out.println(cid + " " + cname + " " + fuzzy + " " + lowBound + " " + highBound);
-        return courseMapper.findBySearch(cid, cname, fuzzy, lowBound, highBound);
+        System.out.println(courseId + " " + courseName + " " + fuzzy + " " + lowBound + " " + highBound);
+        return courseMapper.findBySearch(courseId, courseName, fuzzy, lowBound, highBound);
     }
 
-    public List<Course> findBySearch(Integer cid) {
-        return courseMapper.findBySearch(cid, null, 0, null, null);
-    }
-
-    public List<Course> findById(Integer cid) {
-        HashMap<String, String> map = new HashMap<>();
-        if (cid != null)
-            map.put("cid", String.valueOf(cid));
+    public List<Course> findBySearch(String courseId) {
+        Map<String, String> map = new HashMap<>();
+        if (courseId != null) {
+            map.put("courseId", courseId);
+        }
         return findBySearch(map);
+    }
+
+    public List<Course> findById(String courseId) {
+        return findBySearch(courseId);
     }
 
     public boolean updateById(Course course) {
@@ -80,9 +70,7 @@ public class CourseService {
         return courseMapper.insertCourse(course);
     }
 
-    public boolean deleteById(Integer cid) {
-        return courseMapper.deleteById(cid);
+    public boolean deleteById(String courseId) {
+        return courseMapper.deleteById(courseId);
     }
-
-
 }

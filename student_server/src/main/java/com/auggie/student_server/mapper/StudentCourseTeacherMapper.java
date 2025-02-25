@@ -1,6 +1,5 @@
 package com.auggie.student_server.mapper;
 
-import com.auggie.student_server.entity.CourseTeacher;
 import com.auggie.student_server.entity.CourseTeacherInfo;
 import com.auggie.student_server.entity.SCTInfo;
 import com.auggie.student_server.entity.StudentCourseTeacher;
@@ -9,49 +8,51 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * @Auther: auggie
- * @Date: 2022/2/10 19:58
- * @Description: StudentCourseTeacherMapper
- * @Version 1.0.0
- */
-
 @Repository
 @Mapper
 public interface StudentCourseTeacherMapper {
 
-    public List<CourseTeacherInfo> findByStudentId(@Param("sid") Integer sid,
-                                                   @Param("term") String term);
+    // 根据学生ID和学期查询课程-教师信息
+    public List<CourseTeacherInfo> findByStudentId(@Param("studentId") String studentId,
+                                                   @Param("semester") String semester);
 
-    public List<SCTInfo> findBySearch(@Param("sid") Integer sid,
-                                      @Param("sname") String sname,
+    // 根据条件查询学生-课程-教师信息
+    public List<SCTInfo> findBySearch(@Param("studentId") String studentId,
+                                      @Param("studentName") String studentName,
                                       @Param("sFuzzy") Integer sFuzzy,
-                                      @Param("cid") Integer cid,
-                                      @Param("cname") String cname,
+                                      @Param("courseId") String courseId,
+                                      @Param("courseName") String courseName,
                                       @Param("cFuzzy") Integer cFuzzy,
-                                      @Param("tid") Integer tid,
-                                      @Param("tname") String tname,
+                                      @Param("staffId") String staffId,
+                                      @Param("teacherName") String teacherName,
                                       @Param("tFuzzy") Integer tFuzzy,
                                       @Param("lowBound") Integer lowBound,
                                       @Param("highBound") Integer highBound,
-                                      @Param("term") String term);
+                                      @Param("semester") String semester);
 
-    @Select("SELECT DISTINCT sct.term FROM studentms.sct sct")
+    // 查询所有学期
+    @Select("SELECT DISTINCT semester FROM course_selection")
     public List<String> findAllTerm();
 
-    @Select("SELECT * FROM studentms.sct WHERE sid = #{sct.sid} AND cid = #{sct.cid} AND tid = #{sct.tid} AND term = #{sct.term}")
+    // 根据学生-课程-教师关联信息查询
+    @Select("SELECT * FROM course_selection WHERE student_id = #{sct.studentId} AND course_id = #{sct.courseId} AND staff_id = #{sct.staffId} AND semester = #{sct.semester}")
     public List<StudentCourseTeacher> findBySCT(@Param("sct") StudentCourseTeacher studentCourseTeacher);
 
-    @Insert("INSERT INTO studentms.sct (sid, cid, tid, term) VALUES (#{s.sid}, #{s.cid}, #{s.tid}, #{s.term})")
-    public boolean insert(@Param("s")StudentCourseTeacher studentCourseTeacher);
+    // 插入学生-课程-教师关联信息
+    @Insert("INSERT INTO course_selection (student_id, course_id, staff_id, semester, normal_score, test_score, total_score) " +
+            "VALUES (#{s.studentId}, #{s.courseId}, #{s.staffId}, #{s.semester}, NULL, NULL, NULL)")
+    public boolean insert(@Param("s") StudentCourseTeacher studentCourseTeacher);
 
-    @Update("UPDATE studentms.sct SET sct.grade = #{grade} WHERE sct.sid = #{sid} AND sct.tid = #{tid} AND sct.cid = #{cid} AND sct.term = #{term}")
-    public boolean updateById(@Param("sid") Integer sid,
-                              @Param("cid") Integer cid,
-                              @Param("tid") Integer tid,
-                              @Param("term") String term,
+    // 更新成绩
+    @Update("UPDATE course_selection SET normal_score = #{grade}, test_score = #{grade}, total_score = #{grade} " +
+            "WHERE student_id = #{studentId} AND course_id = #{courseId} AND staff_id = #{staffId} AND semester = #{semester}")
+    public boolean updateById(@Param("studentId") String studentId,
+                              @Param("courseId") String courseId,
+                              @Param("staffId") String staffId,
+                              @Param("semester") String semester,
                               @Param("grade") Integer grade);
 
-    @Delete("DELETE FROM studentms.sct WHERE sid = #{sct.sid} AND tid = #{sct.tid} AND cid = #{sct.cid}")
+    // 删除学生-课程-教师关联信息
+    @Delete("DELETE FROM course_selection WHERE student_id = #{sct.studentId} AND course_id = #{sct.courseId} AND staff_id = #{sct.staffId}")
     public boolean deleteBySCT(@Param("sct") StudentCourseTeacher sct);
 }

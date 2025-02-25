@@ -1,6 +1,5 @@
 package com.auggie.student_server.mapper;
 
-import com.auggie.student_server.entity.Student;
 import com.auggie.student_server.entity.Teacher;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,30 +7,27 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * @Auther: auggie
- * @Date: 2022/2/9 10:51
- * @Description: TeacherMapper
- * @Version 1.0.0
- */
-
 @Repository
 @Mapper
 public interface TeacherMapper {
-    //    select
+
+    // 查询所有教师
     public List<Teacher> findAll();
 
-    public Teacher findById(@Param("tid") Integer tid);
+    // 根据教师ID查询教师信息
+    public Teacher findById(@Param("staffId") String staffId);
 
-    public List<Teacher> findBySearch(@Param("tid") Integer tid, @Param("tname") String tname, @Param("fuzzy") Integer fuzzy);
+    // 根据条件查询教师
+    public List<Teacher> findBySearch(@Param("staffId") String staffId,
+                                      @Param("name") String name,
+                                      @Param("fuzzy") Integer fuzzy);
 
-    //    update
+    // 更新教师信息
     public boolean updateById(@Param("teacher") Teacher teacher);
 
-    //    insert
+    // 插入教师信息
     public boolean save(@Param("teacher") Teacher teacher);
 
-    //    delete
-    public boolean deleteById(@Param("tid") Integer tid);
-
+    // 根据教师ID删除教师
+    public boolean deleteById(@Param("staffId") String staffId);
 }

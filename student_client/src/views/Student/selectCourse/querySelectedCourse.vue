@@ -7,27 +7,27 @@
           style="width: 100%">
         <el-table-column
             fixed
-            prop="cid"
+            prop="courseId"
             label="课号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="cname"
+            prop="courseName"
             label="课程号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="tid"
+            prop="staffId"
             label="教师号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="tname"
+            prop="name"
             label="教师名称"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="ccredit"
+            prop="credit"
             label="学分"
             width="150">
         </el-table-column>
@@ -64,15 +64,15 @@
 export default {
   methods: {
     deleteSCT(row) {
-      const cid = row.cid
-      const tid = row.tid
-      const sid = sessionStorage.getItem('sid')
-      const term = sessionStorage.getItem('currentTerm')
+      const courseId = row.courseId
+      const staffId = row.staffId
+      const studentId = sessionStorage.getItem('studentId')
+      const semester = sessionStorage.getItem('currentTerm')
       const sct = {
-        cid: cid,
-        tid: tid,
-        sid: sid,
-        term: term
+        courseId: courseId,
+        staffId: staffId,
+        studentIdId: studentId,
+        semester: semester
       }
 
       const that = this
@@ -114,10 +114,10 @@ export default {
     }
   },
   created() {
-    const sid = sessionStorage.getItem('sid')
-    const term = sessionStorage.getItem('currentTerm')
+    const studentId = sessionStorage.getItem('studentId')
+    const semester = sessionStorage.getItem('currentTerm')
     const that = this
-    axios.get('http://localhost:10086/SCT/findBySid/' + sid + '/' + term).then(function (resp) {
+    axios.get('http://localhost:10086/SCT/findBySid/' + studentId + '/' + semester).then(function (resp) {
       that.tmpList = resp.data
       that.total = resp.data.length
       let start = 0, end = that.pageSize

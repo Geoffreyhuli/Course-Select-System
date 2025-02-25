@@ -3,44 +3,40 @@ package com.auggie.student_server.mapper;
 import com.auggie.student_server.entity.Course;
 import com.auggie.student_server.entity.CourseTeacher;
 import com.auggie.student_server.entity.CourseTeacherInfo;
-import lombok.Data;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * @Auther: auggie
- * @Date: 2022/2/10 16:43
- * @Description: CourseTeacherMapper
- * @Version 1.0.0
- */
 @Repository
 @Mapper
 public interface CourseTeacherMapper {
 
-    @Insert("INSERT INTO studentms.ct (cid, tid, term) VALUES (#{cid}, #{tid}, #{term})")
-    public boolean insertCourseTeacher(@Param("cid") Integer cid,
-                                       @Param("tid") Integer tid,
-                                       @Param("term") String term);
+    // 插入课程-教师关联信息
+    @Insert("INSERT INTO class (course_id, staff_id, semester, class_time) " +
+            "VALUES (#{courseId}, #{staffId}, #{semester}, '未知')")
+    public boolean insertCourseTeacher(@Param("courseId") String courseId,
+                                       @Param("staffId") String staffId,
+                                       @Param("semester") String semester);
 
-    public List<CourseTeacher> findBySearch(@Param("cid") Integer cid,
-                                            @Param("tid") Integer tid,
-                                            @Param("term") String term);
+    // 根据条件查询课程-教师关联信息
+    public List<CourseTeacher> findBySearch(@Param("courseId") String courseId,
+                                            @Param("staffId") String staffId,
+                                            @Param("semester") String semester);
 
-    public List<Course> findMyCourse(@Param("tid") Integer tid,
-                                     @Param("term") String term);
+    // 查询教师教授的课程
+    public List<Course> findMyCourse(@Param("staffId") String staffId,
+                                     @Param("semester") String semester);
 
-    public List<CourseTeacherInfo> findCourseTeacherInfo(@Param("tid") Integer tid,
-                                                         @Param("tname") String tname,
+    // 查询课程-教师关联信息
+    public List<CourseTeacherInfo> findCourseTeacherInfo(@Param("staffId") String staffId,
+                                                         @Param("teacherName") String teacherName,
                                                          @Param("tFuzzy") Integer tFuzzy,
-                                                         @Param("cid") Integer cid,
-                                                         @Param("cname") String cname,
+                                                         @Param("courseId") String courseId,
+                                                         @Param("courseName") String courseName,
                                                          @Param("cFuzzy") Integer cFuzzy);
 
-    @Delete("DELETE FROM studentms.ct WHERE cid = #{c.cid} AND tid = #{c.tid}")
+    // 删除课程-教师关联信息
+    @Delete("DELETE FROM class WHERE course_id = #{c.courseId} AND staff_id = #{c.staffId}")
     public boolean deleteById(@Param("c") CourseTeacher courseTeacher);
 }

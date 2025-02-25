@@ -1,6 +1,5 @@
 package com.auggie.student_server.controller;
 
-import com.auggie.student_server.entity.Student;
 import com.auggie.student_server.entity.Teacher;
 import com.auggie.student_server.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Auther: auggie
- * @Date: 2022/2/9 11:02
- * @Description: TeacherController
- * @Version 1.0.0
- */
-
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/teacher")
@@ -23,44 +15,49 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
+    // 添加教师
     @PostMapping("/addTeacher")
     public boolean addTeacher(@RequestBody Teacher teacher) {
+        System.out.println("正在保存教师对象：" + teacher);
         return teacherService.save(teacher);
     }
 
+    // 教师登录验证
     @PostMapping("/login")
     public boolean login(@RequestBody Teacher teacher) {
-        System.out.println("正在验证教师登陆 " + teacher);
-        Teacher t = teacherService.findById(teacher.getTid());
-        System.out.println("数据库教师信息" + t);
+        System.out.println("正在验证教师登录：" + teacher);
+        Teacher t = teacherService.findById(teacher.getStaffId());
+        System.out.println("数据库教师信息：" + t);
         if (t == null || !t.getPassword().equals(teacher.getPassword())) {
             return false;
         }
-        else {
-            return true;
-        }
+        return true;
     }
 
-    @GetMapping("/findById/{tid}")
-    public Teacher findById(@PathVariable("tid") Integer tid) {
-        System.out.println("正在查询学生信息 By id " + tid);
-        return teacherService.findById(tid);
+    // 根据教师ID查询教师信息
+    @GetMapping("/findById/{staffId}")
+    public Teacher findById(@PathVariable("staffId") String staffId) {
+        System.out.println("正在查询教师信息 By id：" + staffId);
+        return teacherService.findById(staffId);
     }
 
+    // 根据条件查询教师
     @PostMapping("/findBySearch")
     public List<Teacher> findBySearch(@RequestBody Map<String, String> map) {
         return teacherService.findBySearch(map);
     }
 
-    @GetMapping("/deleteById/{tid}")
-    public boolean deleteById(@PathVariable("tid") int tid) {
-        System.out.println("正在删除学生 tid：" + tid);
-        return teacherService.deleteById(tid);
+    // 根据教师ID删除教师
+    @GetMapping("/deleteById/{staffId}")
+    public boolean deleteById(@PathVariable("staffId") String staffId) {
+        System.out.println("正在删除教师 staffId：" + staffId);
+        return teacherService.deleteById(staffId);
     }
 
+    // 更新教师信息
     @PostMapping("/updateTeacher")
     public boolean updateTeacher(@RequestBody Teacher teacher) {
-        System.out.println("更新 " + teacher);
+        System.out.println("更新教师信息：" + teacher);
         return teacherService.updateById(teacher);
     }
 }

@@ -3,43 +3,81 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.auggie.student_server.mapper.StudentMapper">
+
+    <!-- 查询所有学生 -->
     <select id="findAll" resultType="Student">
-        SELECT * FROM studentms.s;
+        SELECT
+            student_id AS studentId,
+            name,
+            password,
+            sex,
+            date_of_birth AS dateOfBirth,
+            native_place AS nativePlace,
+            mobile_phone AS mobilePhone,
+            dept_id AS deptId
+        FROM
+            student;
     </select>
 
+    <!-- 根据学生ID查询学生信息 -->
     <select id="findById" resultType="Student">
-        SELECT * FROM studentms.s WHERE sid = #{sid};
+        SELECT
+            student_id AS studentId,
+            name,
+            password,
+            sex,
+            date_of_birth AS dateOfBirth,
+            native_place AS nativePlace,
+            mobile_phone AS mobilePhone,
+            dept_id AS deptId
+        FROM
+            student
+        WHERE
+            student_id = #{studentId};
     </select>
 
+    <!-- 根据条件查询学生 -->
     <select id="findBySearch" resultType="Student">
-        SELECT * FROM studentms.s
+        SELECT
+        student_id AS studentId,
+        name,
+        password,
+        sex,
+        dept_id AS deptId
+        FROM
+        student
         <where>
-            <if test="student.sid != null">
-                sid = #{student.sid}
+            <if test="student.studentId != null and student.studentId != ''">
+                student_id = #{student.studentId}
             </if>
-            <if test="student.sname != null">
+            <if test="student.name != null and student.name != ''">
                 <if test="fuzzy == 0">
-                    AND sname = #{student.sname}
+                    AND name = #{student.name}
                 </if>
                 <if test="fuzzy == 1">
-                    AND sname LIKE CONCAT('%', #{student.sname}, '%')
+                    AND name LIKE CONCAT('%', #{student.name}, '%')
                 </if>
             </if>
         </where>
     </select>
 
+    <!-- 更新学生信息 -->
     <update id="updateById">
-        UPDATE studentms.s SET
-        sname = #{student.sname},
-        password = #{student.password}
-        WHERE sid = #{student.sid};
+        UPDATE student SET
+                           name = #{student.name},
+                           password = #{student.password}
+        WHERE
+            student_id = #{student.studentId};
     </update>
 
+    <!-- 插入学生信息 -->
     <insert id="save">
-        INSERT INTO studentms.s (sname, password) VALUES (#{student.sname}, #{student.password})
+        INSERT INTO student (student_id, name, password, sex, date_of_birth, native_place, mobile_phone, dept_id)
+        VALUES (#{student.studentId}, #{student.name}, #{student.password}, #{student.sex}, #{student.dateOfBirth}, #{student.nativePlace}, #{student.mobilePhone}, #{student.deptId})
     </insert>
 
+    <!-- 根据学生ID删除学生 -->
     <delete id="deleteById">
-        DELETE FROM studentms.s WHERE sid = #{sid}
+        DELETE FROM student WHERE student_id = #{studentId}
     </delete>
 </mapper>

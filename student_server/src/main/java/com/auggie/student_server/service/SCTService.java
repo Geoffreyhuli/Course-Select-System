@@ -7,101 +7,90 @@ import com.auggie.student_server.mapper.StudentCourseTeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-/**
- * @Auther: auggie
- * @Date: 2022/2/10 20:10
- * @Description: SCTService
- * @Version 1.0.0
- */
 
 @Service
 public class SCTService {
     @Autowired
     private StudentCourseTeacherMapper studentCourseTeacherMapper;
 
-    public List<CourseTeacherInfo> findBySid(Integer sid, String term) {
-        return studentCourseTeacherMapper.findByStudentId(sid, term);
+    // 根据学生ID和学期查询课程-教师信息
+    public List<CourseTeacherInfo> findBySid(String studentId, String semester) {
+        return studentCourseTeacherMapper.findByStudentId(studentId, semester);
     }
 
+    // 查询所有学期
     public List<String> findAllTerm() {
         return studentCourseTeacherMapper.findAllTerm();
     }
 
+    // 检查选课记录是否存在
     public boolean isSCTExist(StudentCourseTeacher studentCourseTeacher) {
         return studentCourseTeacherMapper.findBySCT(studentCourseTeacher).size() != 0;
     }
 
+    // 保存选课记录
     public boolean save(StudentCourseTeacher studentCourseTeacher) {
         return studentCourseTeacherMapper.insert(studentCourseTeacher);
     }
 
+    // 删除选课记录
     public boolean deleteBySCT(StudentCourseTeacher studentCourseTeacher) {
         return studentCourseTeacherMapper.deleteBySCT(studentCourseTeacher);
     }
 
-    public boolean deleteById(Integer sid, Integer cid, Integer tid, String  term) {
+    // 根据学生ID、课程ID、教师ID和学期删除选课记录
+    public boolean deleteById(String studentId, String courseId, String staffId, String semester) {
         StudentCourseTeacher studentCourseTeacher = new StudentCourseTeacher();
-        studentCourseTeacher.setSid(sid);
-        studentCourseTeacher.setCid(cid);
-        studentCourseTeacher.setTid(tid);
-        studentCourseTeacher.setTerm(term);
+        studentCourseTeacher.setStudentId(studentId);
+        studentCourseTeacher.setCourseId(courseId);
+        studentCourseTeacher.setStaffId(staffId);
+        studentCourseTeacher.setSemester(semester);
         return studentCourseTeacherMapper.deleteBySCT(studentCourseTeacher);
     }
 
-    public SCTInfo findByIdWithTerm(Integer sid, Integer cid, Integer tid, String term) {
+    // 根据学生ID、课程ID、教师ID和学期查询选课信息
+    public SCTInfo findByIdWithTerm(String studentId, String courseId, String staffId, String semester) {
         return studentCourseTeacherMapper.findBySearch(
-                sid, null, 0,
-                cid, null, 0,
-                tid, null, 0,
-                null, null, term).get(0);
+                studentId, null, 0,
+                courseId, null, 0,
+                staffId, null, 0,
+                null, null, semester).get(0);
     }
 
-    public boolean updateById(Integer sid, Integer cid, Integer tid, String term, Integer grade) {
-        return studentCourseTeacherMapper.updateById(sid, cid, tid, term, grade);
+    // 更新成绩
+    public boolean updateById(String studentId, String courseId, String staffId, String semester, Integer grade) {
+        return studentCourseTeacherMapper.updateById(studentId, courseId, staffId, semester, grade);
     }
 
+    // 根据条件查询选课信息
     public List<SCTInfo> findBySearch(Map<String, String> map) {
-        Integer sid = null, cid = null, tid = null;
-        String sname = null, cname = null, tname = null, term = null;
+        String studentId = null, courseId = null, staffId = null;
+        String studentName = null, courseName = null, teacherName = null, semester = null;
         Integer sFuzzy = null, cFuzzy = null, tFuzzy = null;
         Integer lowBound = null, highBound = null;
 
-        if (map.containsKey("cid")) {
-            try {
-                cid = Integer.parseInt(map.get("cid"));
-            }
-            catch (Exception e) {
-            }
+        if (map.containsKey("studentId")) {
+            studentId = map.get("studentId");
         }
-        if (map.containsKey("sid")) {
-            try {
-                sid = Integer.parseInt(map.get("sid"));
-            }
-            catch (Exception e) {
-            }
+        if (map.containsKey("courseId")) {
+            courseId = map.get("courseId");
         }
-        if (map.containsKey("tid")) {
-            try {
-                tid = Integer.parseInt(map.get("tid"));
-            }
-            catch (Exception e) {
-            }
+        if (map.containsKey("staffId")) {
+            staffId = map.get("staffId");
         }
-        if (map.containsKey("sname")) {
-            sname = map.get("sname");
+        if (map.containsKey("studentName")) {
+            studentName = map.get("studentName");
         }
-        if (map.containsKey("tname")) {
-            tname = map.get("tname");
+        if (map.containsKey("teacherName")) {
+            teacherName = map.get("teacherName");
         }
-        if (map.containsKey("cname")) {
-            cname = map.get("cname");
+        if (map.containsKey("courseName")) {
+            courseName = map.get("courseName");
         }
-        if (map.containsKey("term")) {
-            term = map.get("term");
+        if (map.containsKey("semester")) {
+            semester = map.get("semester");
         }
         if (map.containsKey("sFuzzy")) {
             sFuzzy = map.get("sFuzzy").equals("true") ? 1 : 0;
@@ -115,23 +104,23 @@ public class SCTService {
         if (map.containsKey("lowBound")) {
             try {
                 lowBound = Integer.parseInt(map.get("lowBound"));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
+                // 忽略异常
             }
         }
         if (map.containsKey("highBound")) {
             try {
-                highBound = Integer.valueOf(map.get("highBound"));
-            }
-            catch (Exception e) {
+                highBound = Integer.parseInt(map.get("highBound"));
+            } catch (Exception e) {
+                // 忽略异常
             }
         }
 
         System.out.println("SCT 查询：" + map);
         return studentCourseTeacherMapper.findBySearch(
-                sid, sname, sFuzzy,
-                cid, cname, cFuzzy,
-                tid, tname, tFuzzy,
-                lowBound, highBound, term);
+                studentId, studentName, sFuzzy,
+                courseId, courseName, cFuzzy,
+                staffId, teacherName, tFuzzy,
+                lowBound, highBound, semester);
     }
 }

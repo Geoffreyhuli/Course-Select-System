@@ -7,31 +7,25 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * @Auther: auggie
- * @Date: 2022/2/8 16:12
- * @Description: StudentMapper
- * @Version 1.0.0
- */
-
 @Mapper
 @Repository
 public interface StudentMapper {
 
-//    select
+    // 查询所有学生
     public List<Student> findAll();
 
-    public Student findById(@Param("sid") Integer sid);
+    // 根据学生ID查询学生信息
+    public Student findById(@Param("studentId") String studentId);
 
+    // 根据条件查询学生
     public List<Student> findBySearch(@Param("student") Student student, @Param("fuzzy") Integer fuzzy);
 
-//    update
+    // 更新学生信息
     public boolean updateById(@Param("student") Student student);
 
-//    insert
+    // 插入学生信息
     public boolean save(@Param("student") Student student);
 
-//    delete
-    public boolean deleteById(@Param("sid") Integer sid);
-
+    // 根据学生ID删除学生
+    public boolean deleteById(@Param("studentId") String studentId);
 }

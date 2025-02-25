@@ -10,93 +10,77 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Auther: auggie
- * @Date: 2022/2/10 16:50
- * @Description: CourseTeacherService
- * @Version 1.0.0
- */
-
 @Service
 public class CourseTeacherService {
     @Autowired
     private CourseTeacherMapper courseTeacherMapper;
 
-    public boolean insertCourseTeacher(Integer cid, Integer tid, String term) {
-        return courseTeacherMapper.insertCourseTeacher(cid, tid, term);
+    // 插入课程-教师关联信息
+    public boolean insertCourseTeacher(String courseId, String staffId, String semester) {
+        return courseTeacherMapper.insertCourseTeacher(courseId, staffId, semester);
     }
 
-    public List<Course> findMyCourse(Integer tid, String term) {
-        return courseTeacherMapper.findMyCourse(tid, term);
+    // 查询教师教授的课程
+    public List<Course> findMyCourse(String staffId, String semester) {
+        return courseTeacherMapper.findMyCourse(staffId, semester);
     }
 
+    // 查询课程-教师关联信息
     public List<CourseTeacherInfo> findCourseTeacherInfo(Map<String, String> map) {
-        Integer tid = null, cid = null;
+        String staffId = null, courseId = null;
         Integer tFuzzy = null, cFuzzy = null;
-        String tname = null, cname = null;
-        if (map.containsKey("tid")) {
-            try {
-                tid = Integer.parseInt(map.get("tid"));
-            }
-            catch (Exception e) {
-            }
+        String teacherName = null, courseName = null;
+
+        if (map.containsKey("staffId")) {
+            staffId = map.get("staffId");
         }
-        if (map.containsKey("cid")) {
-            try {
-                cid = Integer.parseInt(map.get("cid"));
-            }
-            catch (Exception e) {
-            }
+        if (map.containsKey("courseId")) {
+            courseId = map.get("courseId");
         }
-        if (map.containsKey("tname")) {
-            tname = map.get("tname");
+        if (map.containsKey("teacherName")) {
+            teacherName = map.get("teacherName");
         }
-        if (map.containsKey("cname")) {
-            cname = map.get("cname");
+        if (map.containsKey("courseName")) {
+            courseName = map.get("courseName");
         }
         if (map.containsKey("tFuzzy")) {
-            tFuzzy = (map.get("tFuzzy").equals("true")) ? 1 : 0;
+            tFuzzy = map.get("tFuzzy").equals("true") ? 1 : 0;
         }
         if (map.containsKey("cFuzzy")) {
-            cFuzzy = (map.get("cFuzzy").equals("true")) ? 1 : 0;
+            cFuzzy = map.get("cFuzzy").equals("true") ? 1 : 0;
         }
-        System.out.println("ct 模糊查询" + map);
-        System.out.println(courseTeacherMapper.findCourseTeacherInfo(tid, tname, tFuzzy, cid, cname, cFuzzy));
-        return courseTeacherMapper.findCourseTeacherInfo(tid, tname, tFuzzy, cid, cname, cFuzzy);
+
+        System.out.println("ct 模糊查询：" + map);
+        System.out.println(courseTeacherMapper.findCourseTeacherInfo(staffId, teacherName, tFuzzy, courseId, courseName, cFuzzy));
+        return courseTeacherMapper.findCourseTeacherInfo(staffId, teacherName, tFuzzy, courseId, courseName, cFuzzy);
     }
 
-    public List<CourseTeacher> findBySearch(Integer cid, Integer tid, String term) {
-        return courseTeacherMapper.findBySearch(cid, tid, term);
+    // 根据条件查询课程-教师关联信息
+    public List<CourseTeacher> findBySearch(String courseId, String staffId, String semester) {
+        return courseTeacherMapper.findBySearch(courseId, staffId, semester);
     }
 
+    // 根据条件查询课程-教师关联信息（Map 参数）
     public List<CourseTeacher> findBySearch(Map<String, String> map) {
-        Integer cid = null;
-        Integer tid = null;
-        String  term = null;
+        String courseId = null;
+        String staffId = null;
+        String semester = null;
 
-        if (map.containsKey("term")) {
-            term = map.get("term");
+        if (map.containsKey("semester")) {
+            semester = map.get("semester");
+        }
+        if (map.containsKey("staffId")) {
+            staffId = map.get("staffId");
+        }
+        if (map.containsKey("courseId")) {
+            courseId = map.get("courseId");
         }
 
-        if (map.containsKey("tid")) {
-            try {
-                tid = Integer.parseInt(map.get("tid"));
-            }
-            catch (Exception e) {
-            }
-        }
-
-        if (map.containsKey("cid")) {
-            try {
-                cid = Integer.parseInt(map.get("cid"));
-            }
-            catch (Exception e) {
-            }
-        }
         System.out.println("开课表查询：" + map);
-        return courseTeacherMapper.findBySearch(cid, tid, term);
+        return courseTeacherMapper.findBySearch(courseId, staffId, semester);
     }
 
+    // 删除课程-教师关联信息
     public boolean deleteById(CourseTeacher courseTeacher) {
         return courseTeacherMapper.deleteById(courseTeacher);
     }

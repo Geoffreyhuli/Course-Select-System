@@ -3,41 +3,57 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.auggie.student_server.mapper.CourseMapper">
+
+    <!-- 根据条件查询课程 -->
     <select id="findBySearch" resultType="Course">
-        SELECT * FROM studentms.c
+        SELECT
+        course_id AS courseId,
+        course_name AS courseName,
+        credit,
+        credit_hours AS creditHours,
+        dept_id AS deptId
+        FROM
+         course
         <where>
-            <if test="cid != null">
-                cid = #{cid}
+            <if test="courseId != null and courseId != ''">
+                course_id = #{courseId}
             </if>
-            <if test="cname != null">
+            <if test="courseName != null and courseName != ''">
                 <if test="fuzzy == 0">
-                    AND cname = #{cname}
+                    AND course_name = #{courseName}
                 </if>
                 <if test="fuzzy == 1">
-                    AND cname LIKE CONCAT('%', #{cname}, '%')
+                    AND course_name LIKE CONCAT('%', #{courseName}, '%')
                 </if>
             </if>
             <if test="lowBound != null">
-                AND ccredit >= #{lowBound}
+                AND credit >= #{lowBound}
             </if>
             <if test="highBound != null">
-                AND #{highBound} >= ccredit
+                AND #{highBound} >= credit
             </if>
         </where>
     </select>
 
+    <!-- 更新课程信息 -->
     <update id="updateById">
-        UPDATE studentms.c SET
-                               cname = #{course.cname},
-                               ccredit = #{course.ccredit}
-        WHERE cid = #{course.cid};
+        UPDATE course SET
+                          course_name = #{course.courseName},
+                          credit = #{course.credit},
+                          credit_hours = #{course.creditHours},
+                          dept_id = #{course.deptId}
+        WHERE
+            course_id = #{course.courseId};
     </update>
 
+    <!-- 插入课程 -->
     <insert id="insertCourse">
-        INSERT INTO studentms.c (cname, ccredit) VALUES (#{course.cname}, #{course.ccredit})
+        INSERT INTO course (course_id, course_name, credit, credit_hours, dept_id)
+        VALUES (#{course.courseId}, #{course.courseName}, #{course.credit}, #{course.creditHours}, #{course.deptId})
     </insert>
 
+    <!-- 根据课程ID删除课程 -->
     <delete id="deleteById">
-        DELETE FROM studentms.c WHERE cid = #{cid}
+        DELETE FROM course WHERE course_id = #{courseId}
     </delete>
 </mapper>

@@ -7,27 +7,23 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * @Auther: auggie
- * @Date: 2022/2/9 13:30
- * @Description: CourseMapper
- * @Version 1.0.0
- */
-
 @Repository
 @Mapper
 public interface CourseMapper {
-//    select
-    public List<Course> findBySearch(@Param("cid") Integer cid,
-                                     @Param("cname") String cname, @Param("fuzzy") Integer fuzzy,
-                                     @Param("lowBound") Integer lowBound, @Param("highBound") Integer highBound);
 
-//    insert
+    // 根据条件查询课程
+    public List<Course> findBySearch(@Param("courseId") String courseId,
+                                     @Param("courseName") String courseName,
+                                     @Param("fuzzy") Integer fuzzy,
+                                     @Param("lowBound") Integer lowBound,
+                                     @Param("highBound") Integer highBound);
+
+    // 插入课程
     public boolean insertCourse(@Param("course") Course course);
 
-//    update
+    // 更新课程信息
     public boolean updateById(@Param("course") Course course);
 
-//    delete
-    public boolean deleteById(@Param("cid") Integer cid);
+    // 根据课程ID删除课程
+    public boolean deleteById(@Param("courseId") String courseId);
 }

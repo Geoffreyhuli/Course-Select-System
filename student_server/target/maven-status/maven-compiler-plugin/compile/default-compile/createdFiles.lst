@@ -1,6 +1,7 @@
 com\auggie\student_server\service\CourseTeacherService.class
 com\auggie\student_server\controller\StudentController.class
 com\auggie\student_server\entity\CourseTeacherInfo.class
+com\auggie\student_server\entity\Department.class
 com\auggie\student_server\controller\SCTcontroller.class
 com\auggie\student_server\mapper\StudentCourseTeacherMapper.class
 com\auggie\student_server\service\StudentService.class

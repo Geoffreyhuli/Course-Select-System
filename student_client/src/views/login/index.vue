@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login-container">
     <el-container>
       <el-header >
         <div style="text-align: center; font-size: 25px; font-weight: bolder">
@@ -10,14 +10,14 @@
       <el-main>
         <el-card class="login-module">
           <div slot="header" class="clearfix">
-            <span style="text-align: center; font-size: 20px; font-family: 'Microsoft YaHei'">
+            <span style="text-align: center; font-size: 20px">
               <p><i class="el-icon-office-building" style="margin-right: 18px"></i>登陆</p>
             </span>
           </div>
           <div>
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-              <el-form-item label="用户 id" prop="id">
-                <el-input v-model.number="ruleForm.id" prefix-icon="el-icon-lollipop"></el-input>
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
+              <el-form-item label="学工号" prop="id">
+                <el-input v-model="ruleForm.id" prefix-icon="el-icon-lollipop"></el-input>
               </el-form-item>
               <el-form-item label="用户密码" prop="password">
                 <el-input v-model="ruleForm.password" placeholder="请输入密码" show-password prefix-icon="el-icon-ice-cream-round"></el-input>
@@ -26,13 +26,13 @@
                 <el-radio-group v-model="ruleForm.type">
                   <el-radio label="student" value="student">学生</el-radio>
                   <el-radio label="teacher" value="teacher">老师</el-radio>
-                  <el-radio label="admin" value="admin">admin</el-radio>
+                  <el-radio label="admin" value="admin">管理员</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
-                <el-button @click="test('ruleForm')">test</el-button>
+
               </el-form-item>
             </el-form>
           </div>
@@ -52,8 +52,12 @@ export default {
       },
       rules: {
         id: [
-          { required: true, message: '请输入用户 id', trigger: 'blur' },
-          { type: 'number', message: '请输入数字', trigger: 'blur' },
+          { required: true, message: '请输入学号', trigger: 'blur' },
+          {
+            pattern: /^\d+$/, // 确保输入的是数字
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
@@ -71,7 +75,7 @@ export default {
         if (valid) {
           let check = false
           let name = null
-
+          const id = Number(that.ruleForm.id);
           axios.get('http://localhost:10086/info/getCurrentTerm').then(function (resp) {
             sessionStorage.setItem("currentTerm", resp.data)
           })
@@ -81,7 +85,7 @@ export default {
           })
 
           if (that.ruleForm.type === 'admin' || that.ruleForm.type === 'teacher') {
-            let form = {tid: that.ruleForm.id, password: that.ruleForm.password}
+            let form = {staffId: that.ruleForm.id, password: that.ruleForm.password}
             console.log(form)
             axios.post("http://localhost:10086/teacher/login", form).then(function (resp) {
               console.log("教师登陆验证信息：" + resp.data)
@@ -89,14 +93,14 @@ export default {
               if (check === true) {
                 axios.get("http://localhost:10086/teacher/findById/" + that.ruleForm.id).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data)
-                  name = resp.data.tname
+                  name = resp.data.name
 
                   sessionStorage.setItem("token", 'true')
                   sessionStorage.setItem("type", that.ruleForm.type)
                   sessionStorage.setItem("name", name)
-                  sessionStorage.setItem("tid", resp.data.tid)
+                  sessionStorage.setItem("staffId", resp.data.staffId)
 
-                  console.log('name: ' + name + ' ' + that.ruleForm.type + ' ' + resp.data.tid)
+                  console.log('name: ' + name + ' ' + that.ruleForm.type + ' ' + resp.data.staffId)
 
                   if (that.ruleForm.type === 'admin' && name === 'admin') {
                     that.$message({
@@ -133,19 +137,19 @@ export default {
             })
           }
           else if (that.ruleForm.type === 'student') {
-            let form = {sid: that.ruleForm.id, password: that.ruleForm.password}
+            let form = {studentId: that.ruleForm.id, password: that.ruleForm.password}
             axios.post("http://localhost:10086/student/login", form).then(function (resp) {
               console.log("学生登陆验证信息：" + resp.data)
               check = resp.data
               if (check === true) {
                 axios.get("http://localhost:10086/student/findById/" + that.ruleForm.id).then(function (resp) {
                   console.log("登陆页正在获取用户信息" + resp.data)
-                  name = resp.data.sname
+                  name = resp.data.name
 
                   sessionStorage.setItem("token", 'true')
                   sessionStorage.setItem("type", that.ruleForm.type)
                   sessionStorage.setItem("name", name)
-                  sessionStorage.setItem("sid", resp.data.sid)
+                  sessionStorage.setItem("studentId", resp.data.studentId)
 
                   that.$message({
                     showClose: true,
@@ -183,14 +187,18 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    test(forName) {
-      console.log(this.ruleForm)
-    }
+
   }
 }
 </script>
 
 <style>
+.login-container {
+  background-image: url('../../assets/SHU.jpg'); /* 使用相对路径 */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
 .login-module {
   /*width: 380px;*/
   /*height: 325px;*/
@@ -202,8 +210,8 @@ export default {
   width: 30%;
 }
 .el-header {
-  background-color: #B3C0D1;
+  background-color: rgba(255, 255, 255, 0.1);
   color: #333;
-  line-height: 60px;
+  line-height: 40px;
 }
 </style>

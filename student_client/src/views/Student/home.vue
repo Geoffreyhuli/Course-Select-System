@@ -2,14 +2,11 @@
   <div>
     <el-container>
       <el-main>
-        <h1>student home</h1>
+        <h1>学生主页</h1>
         <info-card></info-card>
         <el-card style="width: 40%">
-          <p><i class="el-icon-s-home" style="margin-right: 18px"></i>项目名：学生选课管理系统</p>
+          <p><i class="el-icon-s-home" style="margin-right: 18px"></i>同学你好</p>
 
-
-          <p><i class="el-icon-chat-round" style="margin-right: 18px"></i>源码来自互联网版权归原作者所有</p>
-          <p><i class="el-icon-error" style="margin-right: 18px;"></i>仅供学习，禁止抄袭</p>
         </el-card>
         <logout></logout>
       </el-main>

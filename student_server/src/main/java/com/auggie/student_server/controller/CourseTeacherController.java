@@ -10,13 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Auther: auggie
- * @Date: 2022/2/10 16:51
- * @Description: CourseTeacherController
- * @Version 1.0.0
- */
-
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/courseTeacher")
@@ -24,25 +17,29 @@ public class CourseTeacherController {
     @Autowired
     private CourseTeacherService courseTeacherService;
 
-    @GetMapping("/insert/{cid}/{tid}/{term}")
-    public boolean insert(@PathVariable Integer cid, @PathVariable Integer tid, @PathVariable String term) {
-        if (courseTeacherService.findBySearch(cid, tid, term).size() != 0) {
+    // 插入课程-教师关联信息
+    @GetMapping("/insert/{courseId}/{staffId}/{semester}")
+    public boolean insert(@PathVariable String courseId, @PathVariable String staffId, @PathVariable String semester) {
+        if (courseTeacherService.findBySearch(courseId, staffId, semester).size() != 0) {
             return false;
         }
-        return courseTeacherService.insertCourseTeacher(cid, tid, term);
+        return courseTeacherService.insertCourseTeacher(courseId, staffId, semester);
     }
 
-    @GetMapping("/findMyCourse/{tid}/{term}")
-    public List<Course> findMyCourse(@PathVariable Integer tid, @PathVariable String term) {
-        System.out.println("查询教师课程：" + tid + " " + term);
-        return courseTeacherService.findMyCourse(tid, term);
+    // 查询教师教授的课程
+    @GetMapping("/findMyCourse/{staffId}/{semester}")
+    public List<Course> findMyCourse(@PathVariable String staffId, @PathVariable String semester) {
+        System.out.println("查询教师课程：" + staffId + " " + semester);
+        return courseTeacherService.findMyCourse(staffId, semester);
     }
 
+    // 查询课程-教师关联信息
     @PostMapping("/findCourseTeacherInfo")
     public List<CourseTeacherInfo> findCourseTeacherInfo(@RequestBody Map<String, String> map) {
         return courseTeacherService.findCourseTeacherInfo(map);
     }
 
+    // 删除课程-教师关联信息
     @PostMapping("/deleteById")
     public boolean deleteById(@RequestBody CourseTeacher courseTeacher) {
         return courseTeacherService.deleteById(courseTeacher);

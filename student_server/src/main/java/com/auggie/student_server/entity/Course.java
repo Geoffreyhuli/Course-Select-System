@@ -17,7 +17,9 @@ import org.apache.ibatis.type.Alias;
 @NoArgsConstructor
 @Alias("Course")
 public class Course {
-    private Integer cid;
-    private String cname;
-    private Integer ccredit;
+    private String courseId;      // 课程ID，对应数据库中的 course_id
+    private String courseName;    // 课程名称，对应数据库中的 course_name
+    private Integer credit;       // 学分，对应数据库中的 credit
+    private Integer creditHours;  // 学时，对应数据库中的 credit_hours
+    private String deptId;        // 院系ID，对应数据库中的 dept_id
 }
