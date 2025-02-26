@@ -86,7 +86,7 @@ export default {
     offer(row) {
       const staffId = sessionStorage.getItem("staffId")
       const courseId = row.courseId
-      const semester = sessionStorage.getItem("currentsemester")
+      const semester = sessionStorage.getItem("currentTerm")
 
       const that = this
       axios.get('http://localhost:10086/courseTeacher/insert/' + courseId + '/' + staffId + '/' + semester).then(function (resp) {
