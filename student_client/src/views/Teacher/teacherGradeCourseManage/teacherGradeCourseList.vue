@@ -7,33 +7,33 @@
         style="width: 100%">
       <el-table-column
           fixed
-          prop="cid"
+          prop="courseId"
           label="课程号"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="cname"
+          prop="courseName"
           label="课程名"
           width="150">
       </el-table-column>
       <el-table-column
           fixed
-          prop="sid"
+          prop="studentId"
           label="学号"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="sname"
+          prop="studentName"
           label="学生名"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="grade"
+          prop="totalScore"
           label="成绩"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="term"
+          prop="semester"
           label="学期"
           width="100">
       </el-table-column>
@@ -77,10 +77,10 @@ export default {
       this.$router.push({
         path: '/editorGradeCourse',
         query: {
-          cid: row.cid,
-          tid: row.tid,
-          sid: row.sid,
-          term: row.term
+          courseId: row.courseId,
+          staffId: row.staffId,
+          studentId: row.studentId,
+          semester: row.semester
         }
       })
     }
@@ -117,7 +117,7 @@ export default {
           that.tableData = that.tmpList.slice(start, ans)
 
           for (let i = 0; i < that.tmpList.length; i++) {
-            that.avg += that.tmpList[i].grade
+            that.avg += that.tmpList[i].totalScore
           }
           that.avg /= that.total
           console.log('avg', that.avg)

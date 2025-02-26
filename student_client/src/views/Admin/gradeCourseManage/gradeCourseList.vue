@@ -7,44 +7,44 @@
         style="width: 100%">
       <el-table-column
           fixed
-          prop="cid"
+          prop="courseId"
           label="课程号"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="cname"
+          prop="courseName"
           label="课程名"
           width="150">
       </el-table-column>
       <el-table-column
           fixed
-          prop="tid"
+          prop="staffId"
           label="工号"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="tname"
+          prop="teacherName"
           label="教师名"
           width="100">
       </el-table-column>
       <el-table-column
           fixed
-          prop="sid"
+          prop="studentId"
           label="学号"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="sname"
+          prop="name"
           label="学生名"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="grade"
+          prop="totalScore"
           label="成绩"
           width="100">
       </el-table-column>
       <el-table-column
-          prop="term"
+          prop="semester"
           label="学期"
           width="100">
       </el-table-column>
@@ -86,11 +86,11 @@ export default {
     deleteTeacher(row) {
       const that = this
       console.log(row)
-      const sid = row.sid
-      const cid = row.cid
-      const tid = row.tid
-      const term = row.term
-      axios.get("http://localhost:10086/SCT/deleteById/" + sid + '/' + cid + '/' + tid + '/' + term).then(function (resp) {
+      const studentId = row.studentId
+      const courseId = row.courseId
+      const staffId = row.staffId
+      const semester = row.semester
+      axios.get("http://localhost:10086/SCT/deleteById/" + studentId + '/' + courseId + '/' + staffId + '/' + semester).then(function (resp) {
         console.log(resp)
         if (resp.data === true) {
           that.$message({
@@ -127,10 +127,10 @@ export default {
       this.$router.push({
         path: '/editorGradeCourse',
         query: {
-          cid: row.cid,
-          tid: row.tid,
-          sid: row.sid,
-          term: row.term
+          courseId: row.courseId,
+          staffId: row.staffId,
+          studentId: row.studentId,
+          semester: row.semester
         }
       })
     }

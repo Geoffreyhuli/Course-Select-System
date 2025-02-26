@@ -9,7 +9,7 @@
         SELECT
         course_id AS courseId,
         course_name AS courseName,
-        credit,
+        credit AS credit,
         credit_hours AS creditHours,
         dept_id AS deptId
         FROM

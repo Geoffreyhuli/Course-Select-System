@@ -4,11 +4,11 @@
       <el-main>
         <el-card>
           <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
-            <el-form-item label="课程号" prop="cid">
-              <el-input v-model.number="ruleForm.cid"></el-input>
+            <el-form-item label="课程号" prop="courseId">
+              <el-input v-model.number="ruleForm.courseId"></el-input>
             </el-form-item>
-            <el-form-item label="课程名" prop="cname">
-              <el-input v-model="ruleForm.cname"></el-input>
+            <el-form-item label="课程名" prop="courseName">
+              <el-input v-model="ruleForm.courseName"></el-input>
             </el-form-item>
             <el-form-item label="模糊查询" prop="fuzzy">
               <el-switch v-model="ruleForm.fuzzy"></el-switch>
@@ -38,17 +38,17 @@ export default {
   data() {
     return {
       ruleForm: {
-        cid: null,
-        cname: null,
+        courseId: null,
+        courseName: null,
         fuzzy: true,
         lowBound: null,
         highBound: null
       },
       rules: {
-        cid: [
+        courseId: [
           { type: 'number', message: '必须是数字类型' }
         ],
-        cname: [
+        courseName: [
         ],
         lowBound: [
           { type: 'number', message: '必须是数字类型' }

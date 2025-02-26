@@ -14,22 +14,22 @@
           style="width: 100%">
         <el-table-column
             fixed
-            prop="cid"
+            prop="courseId"
             label="课号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="cname"
+            prop="courseName"
             label="课程号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="tid"
+            prop="staffId"
             label="教师号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="name"
+            prop="teacherName"
             label="教师名称"
             width="150">
         </el-table-column>
@@ -39,7 +39,17 @@
             width="150">
         </el-table-column>
         <el-table-column
-            prop="grade"
+            prop="normalScore"
+            label="平时成绩"
+            width="150">
+        </el-table-column>
+        <el-table-column
+            prop="testScore"
+            label="考试成绩"
+            width="150">
+        </el-table-column>
+        <el-table-column
+            prop="totalScore"
             label="成绩"
             width="150">
         </el-table-column>
@@ -91,7 +101,7 @@ export default {
   watch: {
     term: {
       handler(newTerm, oldTerm) {
-        const sid = sessionStorage.getItem('studentId')
+        const studentId = sessionStorage.getItem('studentId')
         const that = this
         axios.get('http://localhost:10086/SCT/findBySid/' + studentId + '/' + newTerm).then(function (resp) {
           that.tmpList = resp.data
@@ -103,7 +113,7 @@ export default {
           let totalScore = 0
           for (let i = 0; i < that.total; i++) {
             totalScore += that.tmpList[i].credit
-            that.avg += that.tmpList[i].ccredit * that.tmpList[i].grade
+            that.avg += that.tmpList[i].credit * that.tmpList[i].totalScore
           }
           if (totalScore === 0)
             that.avg = 0

@@ -25,4 +25,6 @@ public class CourseTeacherInfo {
     private Float normalScore;
     private Float testScore;
     private Float totalScore;
+    private String semester;
+    private String classTime;
 }

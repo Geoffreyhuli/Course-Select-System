@@ -6,12 +6,12 @@
         style="width: 100%">
       <el-table-column
           fixed
-          prop="sid"
+          prop="studentId"
           label="学号"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="sname"
+          prop="name"
           label="姓名"
           width="120">
       </el-table-column>
@@ -54,7 +54,7 @@ export default {
   methods: {
     deleteStudent(row) {
       const that = this
-      axios.get('http://localhost:10086/student/deleteById/' + row.sid).then(function (resp) {
+      axios.get('http://localhost:10086/student/deleteById/' + row.studentId).then(function (resp) {
         if (resp.data === true) {
           that.$message({
             showClose: true,
@@ -104,7 +104,7 @@ export default {
       this.$router.push({
         path: '/editorStudent',
         query: {
-          sid: row.sid
+          studentId: row.studentId
         }
       })
     }

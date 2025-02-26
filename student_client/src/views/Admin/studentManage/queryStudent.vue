@@ -4,11 +4,11 @@
       <el-main>
         <el-card>
           <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="学号" prop="sid">
-              <el-input v-model.number="ruleForm.sid"></el-input>
+            <el-form-item label="学号" prop="studentId">
+              <el-input v-model.number="ruleForm.studentId"></el-input>
             </el-form-item>
-            <el-form-item label="学生姓名" prop="sname">
-              <el-input v-model="ruleForm.sname"></el-input>
+            <el-form-item label="学生姓名" prop="name">
+              <el-input v-model="ruleForm.name"></el-input>
             </el-form-item>
             <el-form-item label="模糊查询" prop="password">
               <el-switch v-model="ruleForm.password"></el-switch>
@@ -30,22 +30,22 @@ export default {
   data() {
     return {
       ruleForm: {
-        sid: null,
-        sname: null,
+        studentId: null,
+        name: null,
         password: true
       },
       rules: {
-        sid: [
+        studentId: [
           { type: 'number', message: '必须是数字类型' }
         ],
-        sname: [
+        name: [
 
         ],
       }
     };
   },
   create() {
-    this.sid = null
+    this.studentId = null
     this.sname = null
     this.password = true
   },
@@ -64,7 +64,7 @@ export default {
             this.ruleForm.password = null
           }
           let url = null
-          if (this.ruleForm.sid === null && this.ruleForm.sname === null) {
+          if (this.ruleForm.studentId === null && this.ruleForm.name === null) {
             url = '/studentList'
           }
           else {

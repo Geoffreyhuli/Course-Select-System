@@ -11,8 +11,10 @@
             c.course_name AS courseName,
             t.staff_id AS staffId,
             t.name AS teacherName,
-            cs.total_score AS grade,
-            c.credit
+            cs.total_score AS totalScore,
+            cs.normal_score AS normalScore,
+            cs.test_score AS testScore,
+            c.credit AS credit
         FROM
             course_selection cs
                 INNER JOIN
@@ -32,7 +34,9 @@
         t.name AS teacherName,
         s.student_id AS studentId,
         s.name AS studentName,
-        cs.total_score AS grade,
+        cs.normal_score AS nomalScore,
+        cs.test_score AS testScore,
+        cs.total_score AS totalScore,
         cs.semester
         FROM
         course_selection cs
@@ -86,5 +90,6 @@
                 AND #{highBound} >= cs.total_score
             </if>
         </where>
+
     </select>
 </mapper>

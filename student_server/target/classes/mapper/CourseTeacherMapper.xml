@@ -34,6 +34,7 @@
             c.credit,
             c.credit_hours AS creditHours,
             c.dept_id AS deptId
+    
         FROM
             class ct
                 INNER JOIN
@@ -49,7 +50,7 @@
         c.course_name AS courseName,
         t.staff_id AS staffId,
         t.name AS teacherName,
-        c.credit,
+        ct.class_time AS classTime,
         ct.semester
         FROM
         class ct
@@ -57,6 +58,7 @@
         course c ON ct.course_id = c.course_id
         INNER JOIN
         teacher t ON ct.staff_id = t.staff_id
+
         <where>
             <if test="staffId != null and staffId != ''">
                 t.staff_id = #{staffId}
@@ -71,6 +73,9 @@
             </if>
             <if test="courseId != null and courseId != ''">
                 AND c.course_id = #{courseId}
+            </if>
+            <if test="classTime != null and classTime != ''">
+                AND ct.classTime = #{classTime}
             </if>
             <if test="courseName != null and courseName != ''">
                 <if test="cFuzzy == 0">

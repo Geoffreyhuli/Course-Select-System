@@ -7,18 +7,23 @@
         style="width: 100%">
       <el-table-column
           fixed
-          prop="cid"
+          prop="courseId"
           label="课程号"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="cname"
+          prop="courseName"
           label="课程名"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="ccredit"
+          prop="credit"
           label="学分"
+          width="150">
+      </el-table-column>
+      <el-table-column
+          prop="classTime"
+          label="课程时间"
           width="150">
       </el-table-column>
       <el-table-column
@@ -57,7 +62,7 @@ export default {
     },
     deleteTeacher(row) {
       const that = this
-      axios.get('http://localhost:10086/course/deleteById/' + row.cid).then(function (resp) {
+      axios.get('http://localhost:10086/course/deleteById/' + row.courseId).then(function (resp) {
         if (resp.data === true) {
           that.$message({
             showClose: true,
@@ -76,12 +81,12 @@ export default {
       })
     },
     offer(row) {
-      const tid = sessionStorage.getItem("tid")
-      const cid = row.cid
-      const term = sessionStorage.getItem("currentTerm")
+      const staffId = sessionStorage.getItem("staffId")
+      const courseId = row.courseId
+      const semester = sessionStorage.getItem("currentTerm")
 
       const that = this
-      axios.get('http://localhost:10086/courseTeacher/insert/' + cid + '/' + tid + '/' + term).then(function (resp) {
+      axios.get('http://localhost:10086/courseTeacher/insert/' + courseId + '/' + staffId + '/' + semester).then(function (resp) {
         if (resp.data === true) {
           that.$message({
             showClose: true,
@@ -113,7 +118,7 @@ export default {
       this.$router.push({
         path: '/editorCourse',
         query: {
-          cid: row.cid
+          courseId: row.courseId
         }
       })
     }

@@ -1,8 +1,11 @@
 <template>
   <div>
     <el-form style="width: 60%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="教师姓名" prop="tname">
-        <el-input v-model="ruleForm.tname"></el-input>
+      <el-form-item label="教师姓名" prop="name">
+        <el-input v-model="ruleForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="教师Id" prop="studentId">
+        <el-input v-model="ruleForm.staffId"></el-input>
       </el-form-item>
       <el-form-item label="初始密码" prop="password">
         <el-input v-model="ruleForm.password" show-password></el-input>
@@ -20,11 +23,11 @@ export default {
   data() {
     return {
       ruleForm: {
-        tname: '',
+        name: '',
         password: ''
       },
       rules: {
-        tname: [
+        name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
         ],
@@ -41,7 +44,7 @@ export default {
           // 通过前端校验
           const that = this
           console.log(this.ruleForm)
-          if (that.ruleForm.tname === 'admin') {
+          if (that.ruleForm.name === 'admin') {
             that.$message({
               showClose: true,
               message: 'admin 不可添加',

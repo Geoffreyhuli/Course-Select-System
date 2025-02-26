@@ -40,11 +40,11 @@ public interface StudentCourseTeacherMapper {
 
     // 插入学生-课程-教师关联信息
     @Insert("INSERT INTO course_selection (student_id, course_id, staff_id, semester, normal_score, test_score, total_score) " +
-            "VALUES (#{s.studentId}, #{s.courseId}, #{s.staffId}, #{s.semester}, NULL, NULL, NULL)")
+            "VALUES (#{s.studentId}, #{s.courseId}, #{s.staffId}, #{s.semester}, #{s.normalScore}, #{s.testScore}, #{s.totalScore})")
     public boolean insert(@Param("s") StudentCourseTeacher studentCourseTeacher);
 
     // 更新成绩
-    @Update("UPDATE course_selection SET normal_score = #{normalScore}, test_score = #{testScore}, total_score = #{testScore} " +
+    @Update("UPDATE course_selection SET normal_score = #{normalScore}, test_score = #{testScore} " +
             "WHERE student_id = #{studentId} AND course_id = #{courseId} AND staff_id = #{staffId} AND semester = #{semester}")
     public boolean updateById(@Param("studentId") String studentId,
                               @Param("courseId") String courseId,
@@ -53,6 +53,7 @@ public interface StudentCourseTeacherMapper {
                               @Param("normalScore") Float normalScore,
                               @Param("testScore") Float testScore,
                               @Param("totalScore") Float totalScore);
+
 
     // 删除学生-课程-教师关联信息
     @Delete("DELETE FROM course_selection WHERE student_id = #{sct.studentId} AND course_id = #{sct.courseId} AND staff_id = #{sct.staffId}")

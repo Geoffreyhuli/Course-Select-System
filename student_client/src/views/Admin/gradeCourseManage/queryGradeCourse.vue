@@ -4,28 +4,28 @@
       <el-main>
         <el-card>
           <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
-            <el-form-item label="学号" prop="sid">
-              <el-input v-model.number="ruleForm.sid"></el-input>
+            <el-form-item label="学号" prop="studentId">
+              <el-input v-model.number="ruleForm.studentId"></el-input>
             </el-form-item>
-            <el-form-item label="学生名" prop="sname">
-              <el-input v-model="ruleForm.sname"></el-input>
+            <el-form-item label="学生名" prop="studentName">
+              <el-input v-model="ruleForm.studentName"></el-input>
             </el-form-item>
             <el-form-item label="模糊查询" prop="sFuzzy">
               <el-switch v-model="ruleForm.sFuzzy"></el-switch>
             </el-form-item>
-            <el-form-item label="工号" prop="tid">
-              <el-input v-model.number="ruleForm.tid"></el-input>
+            <el-form-item label="工号" prop="staffId">
+              <el-input v-model.number="ruleForm.staffId"></el-input>
             </el-form-item>
-            <el-form-item label="教师名" prop="tname">
-              <el-input v-model="ruleForm.tname"></el-input>
+            <el-form-item label="教师名" prop="teacherName">
+              <el-input v-model="ruleForm.teacherName"></el-input>
             </el-form-item>
             <el-form-item label="模糊查询" prop="tFuzzy">
               <el-switch v-model="ruleForm.tFuzzy"></el-switch>
             </el-form-item>
-            <el-form-item label="课程号" prop="cid">
-              <el-input v-model.number="ruleForm.cid"></el-input>
+            <el-form-item label="课程号" prop="courseId">
+              <el-input v-model.number="ruleForm.courseId"></el-input>
             </el-form-item>
-            <el-form-item label="课程名" prop="cname">
+            <el-form-item label="课程名" prop="courseName">
               <el-input v-model="ruleForm.cname"></el-input>
             </el-form-item>
             <el-form-item label="模糊查询" prop="cFuzzy">
@@ -62,27 +62,27 @@ export default {
     return {
       termList: null,
       ruleForm: {
-        sid: null,
-        sname: null,
+        studentId: null,
+        studentName: null,
         sFuzzy: true,
-        tid: null,
-        tname: null,
+        staffId: null,
+        teacherName: null,
         tFuzzy: true,
-        cid: null,
-        cname: null,
+        courseId: null,
+        courseName: null,
         cFuzzy: true,
         lowBound: null,
         highBound: null,
-        term: sessionStorage.getItem('currentTerm')
+        semester: sessionStorage.getItem('currentTerm')
       },
       rules: {
-        cid: [
+        courseId: [
           { type: 'number', message: '必须是数字类型' }
         ],
-        tid: [
+        staffId: [
           { type: 'number', message: '必须是数字类型' }
         ],
-        sid: [
+        studentId: [
           { type: 'number', message: '必须是数字类型' }
         ],
         cname: [

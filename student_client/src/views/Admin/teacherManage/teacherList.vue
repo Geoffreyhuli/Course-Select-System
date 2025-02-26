@@ -6,12 +6,12 @@
         style="width: 100%">
       <el-table-column
           fixed
-          prop="tid"
+          prop="staffId"
           label="工号"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="tname"
+          prop="name"
           label="姓名"
           width="150">
       </el-table-column>
@@ -53,7 +53,7 @@
 export default {
   methods: {
     deleteTeacher(row) {
-      if (row.tname === 'admin') {
+      if (row.name === 'admin') {
         this.$message({
           showClose: true,
           message: 'admin 不可删除',
@@ -62,7 +62,7 @@ export default {
         return
       }
       const that = this
-      axios.get('http://localhost:10086/teacher/deleteById/' + row.tid).then(function (resp) {
+      axios.get('http://localhost:10086/teacher/deleteById/' + row.staffId).then(function (resp) {
         if (resp.data === true) {
           that.$message({
             showClose: true,
@@ -95,7 +95,7 @@ export default {
       that.tableData = that.tmpList.slice(start, ans)
     },
     editor(row) {
-      if (row.tname === 'admin') {
+      if (row.name === 'admin') {
         this.$message({
           showClose: true,
           message: 'admin 不可编辑',
@@ -106,7 +106,7 @@ export default {
       this.$router.push({
         path: '/editorTeacher',
         query: {
-          tid: row.tid
+          staffId: row.staffId
         }
       })
     }

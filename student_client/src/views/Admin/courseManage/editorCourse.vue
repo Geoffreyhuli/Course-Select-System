@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-form style="width: 60%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="课程名称" prop="cname">
-        <el-input v-model="ruleForm.cname" :value="ruleForm.cname"></el-input>
+      <el-form-item label="课程名称" prop="courseName">
+        <el-input v-model="ruleForm.courseName" :value="ruleForm.courseName"></el-input>
       </el-form-item>
       <el-form-item label="学分" prop="ccredit">
         <el-input v-model.number="ruleForm.ccredit" :value="ruleForm.ccredit"></el-input>
@@ -20,12 +20,12 @@ export default {
   data() {
     return {
       ruleForm: {
-        cid: null,
-        cname: null,
+        courseId: null,
+        courseName: null,
         ccredit: null
       },
       rules: {
-        cname: [
+        courseName: [
           { required: true, message: '请输入名称', trigger: 'blur' },
         ],
         ccredit: [
@@ -37,13 +37,13 @@ export default {
   },
   created() {
     const that = this
-    if (this.$route.query.cid === undefined) {
-      this.ruleForm.cid = 1
+    if (this.$route.query.courseId === undefined) {
+      this.ruleForm.courseId = 1
     }
     else {
-      this.ruleForm.cid = this.$route.query.cid
+      this.ruleForm.courseId = this.$route.query.courseId
     }
-    axios.get('http://localhost:10086/course/findById/' + this.ruleForm.cid).then(function (resp) {
+    axios.get('http://localhost:10086/course/findById/' + this.ruleForm.courseId).then(function (resp) {
       that.ruleForm = resp.data[0]
       console.log(that.ruleForm)
     })

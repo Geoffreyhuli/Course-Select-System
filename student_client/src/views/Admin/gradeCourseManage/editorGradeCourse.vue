@@ -2,17 +2,23 @@
   <div>
     <el-card>
       <el-form style="width: 60%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="课程名称" prop="cname">
-          <el-input v-model="ruleForm.cname" :value="ruleForm.cname" :disabled="true"></el-input>
+        <el-form-item label="课程名称" prop="courseName">
+          <el-input v-model="ruleForm.courseName" :value="ruleForm.courseName" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="教师名" prop="tname">
-          <el-input v-model="ruleForm.tname" :value="ruleForm.tname" :disabled="true"></el-input>
+        <el-form-item label="教师名" prop="teacherName">
+          <el-input v-model="ruleForm.teacherName" :value="ruleForm.teacherName" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="学生名" prop="sname">
-          <el-input v-model="ruleForm.sname" :value="ruleForm.sname" :disabled="true"></el-input>
+        <el-form-item label="学生名" prop="studentName">
+          <el-input v-model="ruleForm.studentName" :value="ruleForm.studentName" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="分数" prop="grade">
-          <el-input v-model.number="ruleForm.grade" :value="ruleForm.grade"></el-input>
+        <el-form-item label="平时分数" prop="normalScore">
+          <el-input v-model.number="ruleForm.normalScore" :value="ruleForm.normalScore"></el-input>
+        </el-form-item>
+        <el-form-item label="考试分数" prop="testScore">
+          <el-input v-model.number="ruleForm.testScore" :value="ruleForm.testScore"></el-input>
+        </el-form-item>
+        <el-form-item label="总分数" prop="totalScore">
+          <el-input v-model.number="ruleForm.totalScore" :value="ruleForm.totalScore"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -26,7 +32,7 @@
 <script>
 export default {
   data() {
-    var checkGrade = (rule, value, callback) => {
+    var checktotalScore = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('成绩不能为空'));
       }
@@ -42,34 +48,36 @@ export default {
     };
     return {
       ruleForm: {
-        cid: null,
-        cname: null,
-        grade: null,
-        sid: null,
-        sname: null,
-        tid: null,
-        tname: null,
+        courseId: null,
+        courseName: null,
+        totalScore: null,
+        normalScore: null,
+        testScore: null,
+        studentId: null,
+        studentName: null,
+        staffId: null,
+        name: null,
       },
       rules: {
-        grade: [
+        totalScore: [
           { required: true, message: '请输入学分', trigger: 'change'},
           { type: 'number', message: '请输入数字', trigger: 'change'},
-          { validator: checkGrade, trigger: 'blur'}
+          { validator: checktotalScore, trigger: 'blur'}
         ],
       }
     };
   },
   created() {
     const that = this
-    this.ruleForm.cid = this.$route.query.cid
-    this.ruleForm.tid = this.$route.query.tid
-    this.ruleForm.sid = this.$route.query.sid
-    this.ruleForm.term = this.$route.query.term
+    this.ruleForm.courseId = this.$route.query.courseId
+    this.ruleForm.staffId = this.$route.query.staffId
+    this.ruleForm.studentId = this.$route.query.studentId
+    this.ruleForm.semester = this.$route.query.semester
     axios.get('http://localhost:10086/SCT/findById/' +
-        this.ruleForm.sid + '/' +
-        this.ruleForm.cid + '/' +
-        this.ruleForm.tid + '/' +
-        this.ruleForm.term).then(function (resp) {
+        this.ruleForm.studentId + '/' +
+        this.ruleForm.courseId + '/' +
+        this.ruleForm.staffId + '/' +
+        this.ruleForm.semester).then(function (resp) {
       that.ruleForm = resp.data
     })
   },
@@ -79,12 +87,14 @@ export default {
         if (valid) {
           // 通过前端校验
           const that = this
-          const sid = that.ruleForm.sid
-          const cid = that.ruleForm.cid
-          const tid = that.ruleForm.tid
-          const term = that.ruleForm.term
-          const grade = that.ruleForm.grade
-          axios.get("http://localhost:10086/SCT/updateById/" + sid + '/' + cid + '/' + tid + '/' + term + '/' + grade).then(function (resp) {
+          const studentId = that.ruleForm.studentId
+          const courseId = that.ruleForm.courseId
+          const staffId = that.ruleForm.staffId
+          const semester = that.ruleForm.semester
+          const totalScore = that.ruleForm.totalScore
+          const testScore = that.ruleForm.testScore
+          const normalScore = that.ruleForm.normalScore
+          axios.get("http://localhost:10086/SCT/updateById/" + studentId + '/' + courseId + '/' + staffId + '/' + semester + '/' + normalScore+ '/' + testScore+ '/' + totalScore).then(function (resp) {
             if (resp.data === true) {
               that.$message({
                 showClose: true,
@@ -98,7 +108,7 @@ export default {
             if (sessionStorage.getItem('type') === 'admin') {
               that.$router.push("/queryGradeCourse")
             } else {
-              that.$router.push("/teacherQueryGradeCourseManage")
+              that.$router.push("/teacherQuerytotalScoreCourseManage")
             }
           })
         } else {

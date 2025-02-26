@@ -74,16 +74,16 @@ export default {
           if (type === 'student') {
             ss = 'Student'
             form = {
-              sid: sessionStorage.getItem('sid'),
-              sname: that.ruleForm.name,
+              studentId: sessionStorage.getItem('studentId'),
+              name: that.ruleForm.name,
               password: that.ruleForm.pass,
             }
           }
           else {
             ss = 'Teacher'
             form = {
-              tid: sessionStorage.getItem('tid'),
-              tname: that.ruleForm.name,
+              staffId: sessionStorage.getItem('staffId'),
+              name: that.ruleForm.name,
               password: that.ruleForm.pass,
             }
           }

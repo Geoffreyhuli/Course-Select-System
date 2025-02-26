@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-form style="width: 60%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="课程名" prop="cname">
-        <el-input v-model="ruleForm.cname"></el-input>
+      <el-form-item label="课程名" prop="courseName">
+        <el-input v-model="ruleForm.courseName"></el-input>
       </el-form-item>
-      <el-form-item label="学分" prop="ccredit">
+      <el-form-item label="学分" prop="credit">
         <el-input v-model.number="ruleForm.ccredit"></el-input>
       </el-form-item>
       <el-form-item>
@@ -20,14 +20,14 @@ export default {
   data() {
     return {
       ruleForm: {
-        cname: null,
-        ccredit: null
+        courseName: null,
+        credit: null
       },
       rules: {
-        cname: [
+        courseName: [
           { required: true, message: '请输入名称', trigger: 'blur' },
         ],
-        ccredit: [
+        credit: [
           { required: true, message: '请输入学分', trigger: 'change' },
           { type: 'number', message: '请输入数字', trigger: 'blur' },
         ],

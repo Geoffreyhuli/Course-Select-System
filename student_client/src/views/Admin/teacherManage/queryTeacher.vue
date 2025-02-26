@@ -4,11 +4,11 @@
       <el-main>
         <el-card>
           <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="工号" prop="tid">
-              <el-input v-model.number="ruleForm.tid"></el-input>
+            <el-form-item label="工号" prop="staffId">
+              <el-input v-model.number="ruleForm.staffId"></el-input>
             </el-form-item>
-            <el-form-item label="教师姓名" prop="tname">
-              <el-input v-model="ruleForm.tname"></el-input>
+            <el-form-item label="教师姓名" prop="name">
+              <el-input v-model="ruleForm.name"></el-input>
             </el-form-item>
             <el-form-item label="模糊查询" prop="fuzzy">
               <el-switch v-model="ruleForm.fuzzy"></el-switch>
@@ -32,23 +32,23 @@ export default {
   data() {
     return {
       ruleForm: {
-        tid: null,
-        tname: null,
+        staffId: null,
+        name: null,
         fuzzy: true
       },
       rules: {
-        tid: [
+        staffId: [
           { type: 'number', message: '必须是数字类型' }
         ],
-        tname: [
+        name: [
 
         ],
       }
     };
   },
   create() {
-    this.tid = null
-    this.tname = null
+    this.staffId = null
+    this.name = null
     this.fuzzy = true
   },
   methods: {

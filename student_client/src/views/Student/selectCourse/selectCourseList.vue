@@ -23,8 +23,13 @@
           width="150">
       </el-table-column>
       <el-table-column
-          prop="name"
+          prop="teacherName"
           label="教师名称"
+          width="150">
+      </el-table-column>
+      <el-table-column
+          prop="classTime"
+          label="课程时间"
           width="150">
       </el-table-column>
       <el-table-column

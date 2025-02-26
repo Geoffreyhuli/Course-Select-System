@@ -4,17 +4,17 @@
       <el-main>
         <el-card>
           <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
-            <el-form-item label="工号" prop="staffId">
-              <el-input v-model.number="ruleForm.staffId"></el-input>
+            <el-form-item label="教师号" prop="staffId">
+              <el-input v-model="ruleForm.staffId"></el-input>
             </el-form-item>
-            <el-form-item label="教师名" prop="name">
-              <el-input v-model.number="ruleForm.name"></el-input>
+            <el-form-item label="教师名" prop="teacherName">
+              <el-input v-model.number="ruleForm.teacherName"></el-input>
             </el-form-item>
             <el-form-item label="教师模糊查询">
               <el-switch v-model="ruleForm.tFuzzy"></el-switch>
             </el-form-item>
             <el-form-item label="课程号" prop="courseId">
-              <el-input v-model.number="ruleForm.courseId"></el-input>
+              <el-input v-model="ruleForm.courseId"></el-input>
             </el-form-item>
             <el-form-item label="课程名" prop="courseName">
               <el-input v-model.number="ruleForm.courseName"></el-input>
@@ -44,7 +44,7 @@ export default {
         staffId: null,
         courseId: null,
         courseName: null,
-        name: null,
+        teacherName: null,
         tFuzzy: true,
         cFuzzy: true
       },

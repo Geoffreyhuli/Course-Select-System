@@ -71,6 +71,7 @@ public class SCTService {
         Integer sFuzzy = null, cFuzzy = null, tFuzzy = null;
         Integer lowBound = null, highBound = null;
 
+
         if (map.containsKey("studentId")) {
             studentId = map.get("studentId");
         }
@@ -121,6 +122,7 @@ public class SCTService {
                 studentId, studentName, sFuzzy,
                 courseId, courseName, cFuzzy,
                 staffId, teacherName, tFuzzy,
-                lowBound, highBound, semester);
+                lowBound, highBound, semester
+        );
     }
 }

@@ -1,8 +1,11 @@
 <template>
   <div>
     <el-form style="width: 60%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="学生姓名" prop="sname">
-        <el-input v-model="ruleForm.sname"></el-input>
+      <el-form-item label="学生姓名" prop="name">
+        <el-input v-model="ruleForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="学生Id" prop="studentId">
+        <el-input v-model="ruleForm.studentId"></el-input>
       </el-form-item>
       <el-form-item label="初始密码" prop="password">
         <el-input v-model="ruleForm.password" show-password></el-input>
@@ -20,11 +23,11 @@ export default {
   data() {
     return {
       ruleForm: {
-        sname: '',
+        name: '',
         password: ''
       },
       rules: {
-        sname: [
+        name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
         ],

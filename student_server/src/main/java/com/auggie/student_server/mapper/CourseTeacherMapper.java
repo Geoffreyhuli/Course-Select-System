@@ -14,7 +14,7 @@ public interface CourseTeacherMapper {
 
     // 插入课程-教师关联信息
     @Insert("INSERT INTO class (course_id, staff_id, semester, class_time) " +
-            "VALUES (#{courseId}, #{staffId}, #{semester}, '未知')")
+            "VALUES (#{courseId}, #{staffId}, #{semester}, #{classTime})")
     public boolean insertCourseTeacher(@Param("courseId") String courseId,
                                        @Param("staffId") String staffId,
                                        @Param("semester") String semester);
@@ -34,6 +34,7 @@ public interface CourseTeacherMapper {
                                                          @Param("tFuzzy") Integer tFuzzy,
                                                          @Param("courseId") String courseId,
                                                          @Param("courseName") String courseName,
+                                                         @Param("classTime") String classTime,
                                                          @Param("cFuzzy") Integer cFuzzy);
 
     // 删除课程-教师关联信息

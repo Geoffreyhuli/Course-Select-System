@@ -2,23 +2,20 @@
   <div>
     <el-card>
       <el-form style="width: 60%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="课程名称" prop="cname">
+        <el-form-item label="课程名称" prop="courseName">
           <el-input v-model="ruleForm.cname" :value="ruleForm.cname" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="教师名" prop="tname">
+        <el-form-item label="教师名" prop="teacherName">
           <el-input v-model="ruleForm.tname" :value="ruleForm.tname" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="学生名" prop="sname">
+        <el-form-item label="学生名" prop="studentName">
           <el-input v-model="ruleForm.sname" :value="ruleForm.sname" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="平时分" prop="grade">
-          <el-input v-model.number="ruleForm.grade" :value="ruleForm.grade"></el-input>
+        <el-form-item label="平时分" prop="normalScore">
+          <el-input v-model.number="ruleForm.normalScore" :value="ruleForm.normalScore"></el-input>
         </el-form-item>
-        <el-form-item label="考试分数" prop="grade">
-          <el-input v-model.number="ruleForm.grade" :value="ruleForm.grade"></el-input>
-        </el-form-item>
-        <el-form-item label="最终分数" prop="totalScore">
-          <el-input v-model.number="ruleForm.grade" :value="ruleForm.grade"></el-input>
+        <el-form-item label="考试分数" prop="testScore">
+          <el-input v-model.number="ruleForm.testScore" :value="ruleForm.testScore"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -48,12 +45,12 @@ export default {
     };
     return {
       ruleForm: {
-        cid: null,
+        courseId: null,
         cname: null,
         grade: null,
-        sid: null,
+        studenstaffId: null,
         sname: null,
-        tid: null,
+        staffId: null,
         tname: null,
       },
       rules: {
@@ -67,15 +64,15 @@ export default {
   },
   created() {
     const that = this
-    this.ruleForm.cid = this.$route.query.cid
-    this.ruleForm.tid = this.$route.query.tid
-    this.ruleForm.sid = this.$route.query.sid
-    this.ruleForm.term = this.$route.query.term
+    this.ruleForm.courseId = this.$route.query.courseId
+    this.ruleForm.staffId = this.$route.query.staffId
+    this.ruleForm.studenstaffId = this.$route.query.studenstaffId
+    this.ruleForm.semester = this.$route.query.semester
     axios.get('http://localhost:10086/SCT/findById/' +
-        this.ruleForm.sid + '/' +
-        this.ruleForm.cid + '/' +
-        this.ruleForm.tid + '/' +
-        this.ruleForm.term).then(function (resp) {
+        this.ruleForm.studenstaffId + '/' +
+        this.ruleForm.courseId + '/' +
+        this.ruleForm.staffId + '/' +
+        this.ruleForm.semester).then(function (resp) {
       that.ruleForm = resp.data
     })
   },
@@ -85,12 +82,13 @@ export default {
         if (valid) {
           // 通过前端校验
           const that = this
-          const sid = that.ruleForm.sid
-          const cid = that.ruleForm.cid
-          const tid = that.ruleForm.tid
-          const term = that.ruleForm.term
-          const grade = that.ruleForm.grade
-          axios.get("http://localhost:10086/SCT/updateById/" + sid + '/' + cid + '/' + tid + '/' + term + '/' + grade).then(function (resp) {
+          const studentId = that.ruleForm.studentId
+          const courseId = that.ruleForm.courseId
+          const staffId = that.ruleForm.staffId
+          const semester = that.ruleForm.semester
+          const normalScore=that.ruleForm.normalScore
+          const testScore=that.ruleForm.testScore
+          axios.get("http://localhost:10086/SCT/updateById/" + studentId + '/' + courseId + '/' + staffId + '/' + semester + '/' + normalScore+'/'+testScore).then(function (resp) {
             if (resp.data === true) {
               that.$message({
                 showClose: true,

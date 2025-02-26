@@ -29,8 +29,7 @@ public class CourseTeacherService {
     public List<CourseTeacherInfo> findCourseTeacherInfo(Map<String, String> map) {
         String staffId = null, courseId = null;
         Integer tFuzzy = null, cFuzzy = null;
-        String teacherName = null, courseName = null;
-
+        String teacherName = null, courseName = null,classTime=null;
         if (map.containsKey("staffId")) {
             staffId = map.get("staffId");
         }
@@ -43,16 +42,18 @@ public class CourseTeacherService {
         if (map.containsKey("courseName")) {
             courseName = map.get("courseName");
         }
+        if (map.containsKey("classTime")) {
+            courseName = map.get("classTime");
+        }
         if (map.containsKey("tFuzzy")) {
             tFuzzy = map.get("tFuzzy").equals("true") ? 1 : 0;
         }
         if (map.containsKey("cFuzzy")) {
             cFuzzy = map.get("cFuzzy").equals("true") ? 1 : 0;
         }
-
         System.out.println("ct 模糊查询：" + map);
-        System.out.println(courseTeacherMapper.findCourseTeacherInfo(staffId, teacherName, tFuzzy, courseId, courseName, cFuzzy));
-        return courseTeacherMapper.findCourseTeacherInfo(staffId, teacherName, tFuzzy, courseId, courseName, cFuzzy);
+        System.out.println(courseTeacherMapper.findCourseTeacherInfo(staffId, teacherName, tFuzzy, courseId, courseName,classTime,cFuzzy));
+        return courseTeacherMapper.findCourseTeacherInfo(staffId, teacherName, tFuzzy, courseId, courseName, classTime,cFuzzy);
     }
 
     // 根据条件查询课程-教师关联信息
